@@ -2,18 +2,15 @@ package com.example.aplicaciondepreguntas.ui.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,9 +28,11 @@ import androidx.navigation.NavHostController
 import com.example.aplicaciondepreguntas.MainActivity
 import com.example.aplicaciondepreguntas.R
 import com.example.aplicaciondepreguntas.ui.rutas.Rutas
+import com.example.aplicaciondepreguntas.ui.themes.MiColor
+import com.example.aplicaciondepreguntas.ui.themes.MiColor2
 
 @Composable
-fun PantallaPrincipal(navController : NavHostController?){
+fun PantallaPrincipal(navController : NavHostController?) {
 
     val contexto = LocalContext.current
     var elDialogoEstaAbierto by remember { mutableStateOf(false) }
@@ -55,8 +54,10 @@ fun PantallaPrincipal(navController : NavHostController?){
             onClick = { navController?.navigate(Rutas.PantallaModoNormal.ruta) },
             modifier = Modifier
                 .padding(8.dp)
-                .fillMaxWidth()
-                .background(Color.Yellow)
+                .fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MiColor,
+                disabledContainerColor = MiColor2)
         ) {
             Text(text = "MODO NORMAL")
         }
@@ -64,8 +65,9 @@ fun PantallaPrincipal(navController : NavHostController?){
             onClick = { navController?.navigate(Rutas.PantallaModoExamen.ruta) },
             modifier = Modifier
                 .padding(8.dp)
-                .fillMaxWidth()
-                .background(Color.Yellow)
+                .fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MiColor)
         ) {
             Text(text = "MODO EXAMEN")
         }
@@ -73,8 +75,8 @@ fun PantallaPrincipal(navController : NavHostController?){
             onClick = { navController?.navigate(Rutas.PantallaEstadisticas.ruta) },
             modifier = Modifier
                 .padding(8.dp)
-                .fillMaxWidth()
-                .background(Color.Yellow)
+                .fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = MiColor)
         ) {
             Text(text = "ESTADÍSTICAS")
         }
@@ -82,8 +84,8 @@ fun PantallaPrincipal(navController : NavHostController?){
             onClick = { elDialogoEstaAbierto = true },
             modifier = Modifier
                 .padding(8.dp)
-                .fillMaxWidth()
-                .background(Color.Yellow)
+                .fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = MiColor)
         ) {
             Text(text = "SALIR")
         }
@@ -119,14 +121,6 @@ fun PantallaPrincipal(navController : NavHostController?){
         )
     }
 }
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CuadroTexto(texto: String, funcionLambda : (String) -> Unit){
-    OutlinedTextField(value = texto, onValueChange = funcionLambda)
-}
-
-
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun PreviewHome(){
