@@ -1,18 +1,21 @@
-package com.example.aplicaciondepreguntas.ui.Clases;
+package com.example.aplicaciondepreguntas.ui.clase;
+
+import androidx.compose.ui.graphics.painter.Painter;
 
 public class Pregunta {
 
     public String enunciado;
     public boolean respuestaCorrecta;
-    public String foto;
+    public Painter foto;
 
     public Pregunta() {
 
     }
 
-    public Pregunta(String pregunta, boolean respuesta, String foto) {
+    public Pregunta(String pregunta, boolean respuesta, Painter foto) {
         this.enunciado = pregunta;
         this.respuestaCorrecta = respuesta;
+        this.foto = foto;
     }
 
     public String getEnunciado() {
@@ -31,11 +34,11 @@ public class Pregunta {
         this.respuestaCorrecta = respuestaCorrecta;
     }
 
-    public String getFoto() {
+    public Painter getFoto() {
         return foto;
     }
 
-    public void setFoto(String foto) {
+    public void setFoto(Painter foto) {
         this.foto = foto;
     }
 }

@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.aplicaciondepreguntas.ui.home.PantallaPrincipal
 import com.example.aplicaciondepreguntas.ui.modonormal.PantallaModoNormal
-import com.example.aplicaciondepreguntas.ui.rutas.Rutas
+import com.example.aplicaciondepreguntas.ui.ruta.Rutas
 
 @Composable
 fun GrafoNavegacion(){

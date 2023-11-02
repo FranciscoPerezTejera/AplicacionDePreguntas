@@ -1,4 +1,4 @@
-package com.example.aplicaciondepreguntas.ui.rutas
+package com.example.aplicaciondepreguntas.ui.ruta
 
 sealed class Rutas(val ruta: String) {
 

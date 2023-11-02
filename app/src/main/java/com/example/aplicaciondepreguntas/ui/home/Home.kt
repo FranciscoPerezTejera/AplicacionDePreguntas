@@ -27,9 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.aplicaciondepreguntas.MainActivity
 import com.example.aplicaciondepreguntas.R
-import com.example.aplicaciondepreguntas.ui.rutas.Rutas
+import com.example.aplicaciondepreguntas.ui.ruta.Rutas
 import com.example.aplicaciondepreguntas.ui.themes.MiColor
-import com.example.aplicaciondepreguntas.ui.themes.MiColor2
 
 @Composable
 fun PantallaPrincipal(navController : NavHostController?) {
