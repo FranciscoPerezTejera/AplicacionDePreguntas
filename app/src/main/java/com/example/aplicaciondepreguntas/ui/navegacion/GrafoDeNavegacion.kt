@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.aplicaciondepreguntas.ui.home.PantallaPrincipal
+import com.example.aplicaciondepreguntas.ui.modonormal.PantallaModoNormal
 import com.example.aplicaciondepreguntas.ui.rutas.Rutas
 
 @Composable
@@ -20,7 +21,7 @@ fun GrafoNavegacion(){
         }
 
         composable(Rutas.PantallaModoNormal.ruta){
-
+            PantallaModoNormal()
         }
     }
 }

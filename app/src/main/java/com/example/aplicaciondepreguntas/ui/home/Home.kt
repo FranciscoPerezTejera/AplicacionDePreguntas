@@ -56,8 +56,7 @@ fun PantallaPrincipal(navController : NavHostController?) {
                 .padding(8.dp)
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
-                containerColor = MiColor,
-                disabledContainerColor = MiColor2)
+                containerColor = MiColor)
         ) {
             Text(text = "MODO NORMAL")
         }
