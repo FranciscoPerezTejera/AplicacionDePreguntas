@@ -28,8 +28,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.aplicaciondepreguntas.R
 import com.example.aplicaciondepreguntas.ui.clase.Pregunta
+import com.example.aplicaciondepreguntas.ui.ruta.Rutas
 import com.example.aplicaciondepreguntas.ui.themes.MiColor
 import kotlin.random.Random
 
@@ -47,13 +49,22 @@ fun PantallaModoNormal() {
         Pregunta("¿Ganó Cristiano Ronaldo el balón de oro en el año 2023?", true, foto1),
         Pregunta("¿Ganó el Alemania el mundial de futbol en el año 2010?", false, foto2),
         Pregunta("¿Tiene el Real Madrid 14 UEFA Champions League?", true, foto3),
-        Pregunta("¿El FC Barcelona es el único equipo español en haber ganado un sextete?", true, foto4),
-        Pregunta("¿Es Messi el máximo goleador de la historia de la UEFA Champions League?", false, foto5))
+        Pregunta(
+            "¿El FC Barcelona es el único equipo español en haber ganado un sextete?",
+            true,
+            foto4
+        ),
+        Pregunta(
+            "¿Es Messi el máximo goleador de la historia de la UEFA Champions League?",
+            false,
+            foto5
+        )
+    )
 
     var preguntaActual by remember { mutableStateOf(0) }
-    var aciertos by remember { mutableStateOf(0) }
-    var fallos by remember { mutableStateOf(0) }
-
+    var aciertos: Int = 0
+    var fallos: Int = 0
+    var cantidadPreguntas: Int = 0
 
 
     Column(
@@ -66,7 +77,8 @@ fun PantallaModoNormal() {
 
         Text(
             text = preguntas[preguntaActual].getEnunciado(),
-            modifier = Modifier.padding(30.dp),
+            modifier = Modifier
+                .padding(30.dp),
             color = Color.White,
             fontFamily = FontFamily.Monospace,
             fontSize = 24.sp,
@@ -76,19 +88,27 @@ fun PantallaModoNormal() {
             painter = preguntas[preguntaActual].getFoto(),
             contentDescription = "",
             modifier = Modifier
-                .size(400.dp)
+                .size(450.dp)
         )
 
         Row {
             Button(
                 onClick = {
-                    val respuesta = respuestaCorrecta(preguntas[preguntaActual], true)
-                    if (respuesta) {
-                        aciertos++
+                    if (!cantidadPreguntas.equals(5)) {
+                        val respuesta = respuestaCorrecta(preguntas[preguntaActual], true)
+
+                        if (respuesta) {
+                            aciertos++
+                        } else {
+                            fallos++
+                        }
+                        preguntaActual++
+                        cantidadPreguntas++
                     } else {
-                        fallos++
+
+
+
                     }
-                    preguntaActual++
                 },
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(
@@ -103,13 +123,22 @@ fun PantallaModoNormal() {
             }
             Button(
                 onClick = {
-                    val respuesta = respuestaCorrecta(preguntas[preguntaActual], false)
-                    if (respuesta) {
-                        aciertos++
-                    } else {
-                        fallos++
+                    if (!cantidadPreguntas.equals(5)) {
+                        val respuesta = respuestaCorrecta(preguntas[preguntaActual], false)
+                        if (respuesta) {
+                            aciertos++
+
+                        } else {
+                            fallos++
+                        }
+                        preguntaActual++
+                        cantidadPreguntas++
                     }
-                    preguntaActual++
+                    else {
+
+
+
+                    }
                 },
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(
@@ -125,7 +154,19 @@ fun PantallaModoNormal() {
         }
         Row {
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+
+                    if (!preguntaActual.equals(0)) {
+
+                        preguntaActual--
+
+                    } else {
+
+                        preguntaActual = preguntas.size
+
+                    }
+
+                },
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MiColor
@@ -151,7 +192,17 @@ fun PantallaModoNormal() {
                 Text(text = "RANDOM")
             }
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    if (preguntaActual.equals(preguntas.size)) {
+
+                        preguntaActual = 0
+
+                    } else {
+
+                        preguntaActual++
+
+                    }
+                },
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MiColor
@@ -170,10 +221,6 @@ fun respuestaCorrecta(pregunta: Pregunta, respuestaUsuario: Boolean): Boolean {
 
     return return pregunta.isRespuestaCorrecta == respuestaUsuario
 }
-
-fun preguntaRandom() {}
-fun prevPregunta() {}
-fun nextPregunta() {}
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
