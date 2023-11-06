@@ -1,4 +1,4 @@
-package com.example.aplicaciondepreguntas.ui.modonormal
+package com.example.aplicaciondepreguntas.ui.modoexamen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,15 +28,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.aplicaciondepreguntas.R
 import com.example.aplicaciondepreguntas.ui.clase.Pregunta
+import com.example.aplicaciondepreguntas.ui.modonormal.respuestaCorrecta
 import com.example.aplicaciondepreguntas.ui.ruta.Rutas
 import com.example.aplicaciondepreguntas.ui.themes.MiColor
 import kotlin.random.Random
 
 @Composable
-fun PantallaModoNormal(navController : NavHostController?) {
+fun PantallaModoExamen(navController : NavHostController?) {
 
     val foto1: Painter = painterResource(id = R.drawable.ronaldo)
     val foto2: Painter = painterResource(id = R.drawable.alemania)
@@ -49,7 +49,8 @@ fun PantallaModoNormal(navController : NavHostController?) {
         Pregunta("¿Ganó el Alemania el mundial de futbol en el año 2010?", false, foto2),
         Pregunta("¿Tiene el Real Madrid 14 UEFA Champions League?", true, foto3),
         Pregunta("¿El FC Barcelona es el único equipo español en haber ganado un sextete?", true, foto4),
-        Pregunta("¿Es Messi el máximo goleador de la historia de la UEFA Champions League?", false, foto5))
+        Pregunta("¿Es Messi el máximo goleador de la historia de la UEFA Champions League?", false, foto5)
+    )
 
     var preguntaActual by remember { mutableStateOf(0) }
     var aciertos: Int = 0
@@ -92,8 +93,9 @@ fun PantallaModoNormal(navController : NavHostController?) {
                         aciertos--
                     }
                     preguntaActual++
-                        cantidadPreguntas++
+                    cantidadPreguntas++
                     if (cantidadPreguntas.equals(5)) {
+
                         navController?.navigate(Rutas.PantallaMensajeNotas.ruta + "/$aciertos")
 
                     }
@@ -118,11 +120,12 @@ fun PantallaModoNormal(navController : NavHostController?) {
                     } else {
                         aciertos--
                     }
-                    cantidadPreguntas++
                     preguntaActual++
+                    cantidadPreguntas++
 
-                    if (cantidadPreguntas == 5) {
-                        navController?.navigate(Rutas.PantallaMensajeNotas.ruta + "/$aciertos")
+                    if (cantidadPreguntas.equals(5)) {
+
+                        navController?.navigate(Rutas.PantallaMensajeNotas.ruta + "/${aciertos}")
 
                     }
                 },
@@ -135,58 +138,7 @@ fun PantallaModoNormal(navController : NavHostController?) {
                     .weight(1f)
             ) {
                 Text(text = "FALSO")
-            }
-        }
-        Row {
-            Button(
-                onClick = {
-                    if (preguntaActual > 0) {
-                        preguntaActual--
-                    } else {
-                        preguntaActual = preguntas.size - 1
-                    }
-                },
-                shape = RectangleShape,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MiColor
-                ),
-                modifier = Modifier
-                    .padding(8.dp)
-                    .weight(1f)
-            ) {
-                Text(text = "PREV")
-            }
-            Button(
-                onClick = {
-                    preguntaActual = Random.nextInt(0, preguntas.size)
-                },
-                shape = RectangleShape,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MiColor
-                ),
-                modifier = Modifier
-                    .padding(8.dp)
-                    .weight(1f)
-            ) {
-                Text(text = "RANDOM")
-            }
-            Button(
-                onClick = {
-                    if (preguntaActual < preguntas.size - 1) {
-                        preguntaActual++
-                    } else {
-                        preguntaActual = 0
-                    }
-                },
-                shape = RectangleShape,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MiColor
-                ),
-                modifier = Modifier
-                    .padding(8.dp)
-                    .weight(1f)
-            ) {
-                Text(text = "NEXT")
+
             }
         }
     }
@@ -197,10 +149,8 @@ fun respuestaCorrecta(pregunta: Pregunta, respuestaUsuario: Boolean): Boolean {
     return return pregunta.isRespuestaCorrecta == respuestaUsuario
 }
 
-
-
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun PreviewModoNormal() {
-    PantallaModoNormal(navController = null)
+fun PreviewModoExamen() {
+    PantallaModoExamen(navController = null)
 }

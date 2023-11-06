@@ -92,7 +92,7 @@ fun PantallaPrincipal(navController : NavHostController?) {
         AlertDialog (
             onDismissRequest = { elDialogoEstaAbierto = false },
             title = { Text("Confirmación") },
-            text = { Text("¿Deseas salir de la aplicación?") },
+            text = { Text("¿Estás seguro que deseas salir de la aplicación?") },
             confirmButton = {
                 Button(
                     onClick = {
