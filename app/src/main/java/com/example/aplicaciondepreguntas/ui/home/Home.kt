@@ -70,13 +70,15 @@ fun PantallaPrincipal(navController : NavHostController?) {
             Text(text = "MODO EXAMEN")
         }
         Button(
-            onClick = { navController?.navigate(Rutas.PantallaEstadisticas.ruta) },
+            onClick = { //navController?.navigate(Rutas.PantallaEstadisticas.ruta)
+                 },
             modifier = Modifier
                 .padding(8.dp)
                 .fillMaxWidth(),
+            enabled = false,
             colors = ButtonDefaults.buttonColors(containerColor = MiColor)
         ) {
-            Text(text = "ESTADÍSTICAS")
+            Text(text = "ESTADÍSTICAS   SOON!")
         }
         Button(
             onClick = { elDialogoEstaAbierto = true },

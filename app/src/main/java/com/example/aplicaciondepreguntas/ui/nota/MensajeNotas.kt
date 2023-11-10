@@ -40,21 +40,21 @@ fun PantallaMensajeNota(aciertos: Int, navController: NavHostController?) {
     val fotoSuspendido: Painter = painterResource(id = R.drawable.suspendido)
 
     var imagenNota by remember { mutableStateOf<Painter>(fotoAprobado) }
-    var textoMensaje by remember { mutableStateOf("¡ENHORABUENA!,\nHas aprobado con la máxima nota.\nFELICIDADES") }
+    var textoMensaje by remember { mutableStateOf("") }
 
     when {
         aciertos >= 4 -> {
             imagenNota = painterResource(id = R.drawable.aprobado)
-            textoMensaje = "¡ENHORABUENA!,\nHas aprobado con la máxima nota.\nFELICIDADES"
+            textoMensaje = "¡ENHORABUENA!,\nHas aprobado, tu puntuación ha sido $aciertos/5\n¡FELICIDADES!"
 
         }
         aciertos == 3 -> {
             imagenNota = fotoAprobadoRaspado
-            textoMensaje = "No está mal,\nHas aprobado muy justo, pero has aprobado\nFELICIDADES"
+            textoMensaje = "No está mal,\nHas aprobado muy justo, tu puntuación ha sido $aciertos/5\n¡FELICIDADES!"
         }
-        else -> {
+         aciertos < 3 -> {
             imagenNota = fotoSuspendido
-            textoMensaje = "Que mal,\nHas suspendido, pero no te desanimes\nVuelve a intentarlo"
+            textoMensaje = "Que mal,\nHas suspendido, tu puntuación  ha sido $aciertos/5\nVUELVE A INTENTARLO"
         }
     }
 

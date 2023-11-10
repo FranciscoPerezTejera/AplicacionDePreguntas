@@ -7,10 +7,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,6 +39,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.aplicaciondepreguntas.R
 import com.example.aplicaciondepreguntas.ui.clase.Pregunta
 import com.example.aplicaciondepreguntas.ui.ruta.Rutas
+import com.example.aplicaciondepreguntas.ui.themes.ColorCorrecto
+import com.example.aplicaciondepreguntas.ui.themes.ColorInCorrecto
 import com.example.aplicaciondepreguntas.ui.themes.MiColor
 import kotlin.random.Random
 
@@ -51,7 +59,7 @@ fun PantallaModoNormal(navController : NavHostController?) {
     val foto10: Painter = painterResource(id = R.drawable.mbappe)
 
     var preguntas = listOf<Pregunta>(
-        Pregunta("¿Ganó Cristiano Ronaldo el balón de oro en el año 2023?", true, foto1),
+        Pregunta("¿Ganó Cristiano Ronaldo el balón de oro en el año 2023?", false, foto1),
         Pregunta("¿Ganó el Alemania el mundial de futbol en el año 2010?", false, foto2),
         Pregunta("¿Tiene el Real Madrid 14 UEFA Champions League?", true, foto3),
         Pregunta("¿El FC Barcelona es el único equipo español en haber ganado un sextete?", true, foto4),
@@ -65,7 +73,11 @@ fun PantallaModoNormal(navController : NavHostController?) {
     var preguntaActual by remember { mutableStateOf(0) }
     var aciertos by remember { mutableStateOf(0) }
     var cantidadPreguntas by remember { mutableStateOf(0) }
-
+    var preguntaRespondidaCorrectamente by remember { mutableStateOf(false) }
+    var colorBotonVerdadero by remember { mutableStateOf(MiColor) }
+    var colorBotonFalso by remember { mutableStateOf(MiColor) }
+    var seRespondio by remember { mutableStateOf(false) }
+    var mensajeRespuesta by remember { mutableStateOf("") }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -88,9 +100,8 @@ fun PantallaModoNormal(navController : NavHostController?) {
             painter = preguntas[preguntaActual].getFoto(),
             contentDescription = "",
             modifier = Modifier
-                .size(450.dp)
+                .size(400.dp)
         )
-
         Row {
             Button(
                 onClick = {
@@ -98,23 +109,21 @@ fun PantallaModoNormal(navController : NavHostController?) {
 
                     if (respuesta) {
                         aciertos++
-                    }
-                    cantidadPreguntas++
-
-                    if (preguntaActual < preguntas.size - 1) {
-                        preguntaActual ++
+                        colorBotonVerdadero = Color.Green
+                        colorBotonFalso = Color.Red
+                        preguntaRespondidaCorrectamente = true
                     }
                     else {
-                        preguntaActual = 0
+                        colorBotonVerdadero = Color.Red
+                        colorBotonFalso = Color.Green
+                        preguntaRespondidaCorrectamente = false
                     }
-
-                    if (cantidadPreguntas == 5){
-                        navController?.navigate(Rutas.PantallaMensajeNota.ruta + "/${aciertos.toString()}")
-                    }
+                    cantidadPreguntas++
+                    seRespondio = true
                 },
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MiColor
+                    containerColor = colorBotonVerdadero
                 ),
                 modifier = Modifier
                     .padding(8.dp)
@@ -127,22 +136,23 @@ fun PantallaModoNormal(navController : NavHostController?) {
                 onClick = {
                     val respuesta = respuestaCorrecta(preguntas[preguntaActual], false)
 
-                    if (respuesta) { aciertos++ }
-                    cantidadPreguntas++
-
-                    if (preguntaActual < preguntas.size - 1) {
-                        preguntaActual ++
+                    if (respuesta) {
+                        aciertos++
+                        colorBotonFalso = Color.Green
+                        colorBotonVerdadero = Color.Red
+                        preguntaRespondidaCorrectamente = true
                     }
                     else {
-                        preguntaActual = 0
+                        colorBotonFalso = Color.Red
+                        colorBotonVerdadero = Color.Green
+                        preguntaRespondidaCorrectamente = false
                     }
-                    if (cantidadPreguntas == 5) {
-                        navController?.navigate(Rutas.PantallaMensajeNota.ruta + "/${aciertos.toString()}")
-                    }
+                    cantidadPreguntas++
+                    seRespondio = true
                 },
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MiColor
+                    containerColor = colorBotonFalso
                 ),
                 modifier = Modifier
                     .padding(8.dp)
@@ -150,6 +160,26 @@ fun PantallaModoNormal(navController : NavHostController?) {
             ) {
                 Text(text = "FALSO")
             }
+        }
+
+        if (seRespondio) {
+            mensajeRespuesta =
+                if (preguntaRespondidaCorrectamente) {
+                    "Haz acertado, la respesta correcta era ${preguntas[preguntaActual].isRespuestaCorrecta}"
+                }
+                else {
+                    "Haz fallado, la respesta correcta era ${preguntas[preguntaActual].isRespuestaCorrecta}"
+                }
+            Text(
+                text = mensajeRespuesta,
+                color = if (preguntaRespondidaCorrectamente) Color.Green else Color.Red,
+                fontFamily = FontFamily.Monospace,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth()
+            )
         }
         Row {
             Button(
@@ -159,6 +189,10 @@ fun PantallaModoNormal(navController : NavHostController?) {
                     } else {
                         preguntaActual = preguntas.size - 1
                     }
+                    colorBotonVerdadero = MiColor
+                    colorBotonFalso = MiColor
+                    seRespondio = false
+                    mensajeRespuesta = ""
                 },
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(
@@ -166,13 +200,18 @@ fun PantallaModoNormal(navController : NavHostController?) {
                 ),
                 modifier = Modifier
                     .padding(8.dp)
-                    .weight(1f)
+                    .weight(1f),
             ) {
+                Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = null, tint = Color.White)
                 Text(text = "PREV")
             }
             Button(
                 onClick = {
                     preguntaActual = Random.nextInt(0, preguntas.size)
+                    colorBotonVerdadero = MiColor
+                    colorBotonFalso = MiColor
+                    seRespondio = false
+                    mensajeRespuesta = ""
                 },
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(
@@ -191,6 +230,10 @@ fun PantallaModoNormal(navController : NavHostController?) {
                     } else {
                         preguntaActual = 0
                     }
+                    colorBotonVerdadero = MiColor
+                    colorBotonFalso = MiColor
+                    seRespondio = false
+                    mensajeRespuesta = ""
                 },
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(
@@ -201,8 +244,12 @@ fun PantallaModoNormal(navController : NavHostController?) {
                     .weight(1f)
             ) {
                 Text(text = "NEXT")
+                Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = null, tint = Color.White)
             }
         }
+    }
+    if (cantidadPreguntas == 5){
+        navController?.navigate(Rutas.PantallaMensajeNota.ruta + "/${aciertos.toString()}")
     }
 }
 

@@ -100,10 +100,6 @@ fun PantallaModoExamen(navController : NavHostController?) {
                     }
                     cantidadPreguntas++
                     preguntaActual = Random.nextInt(0, preguntas.size)
-
-                    if (cantidadPreguntas == 5){
-                        navController?.navigate(Rutas.PantallaMensajeNota.ruta + "/${aciertos.toString()}")
-                    }
                 },
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(
@@ -126,9 +122,6 @@ fun PantallaModoExamen(navController : NavHostController?) {
                     cantidadPreguntas++
                     preguntaActual = Random.nextInt(0, preguntas.size)
 
-                    if (cantidadPreguntas == 5){
-                        navController?.navigate(Rutas.PantallaMensajeNota.ruta + "/${aciertos.toString()}")
-                    }
                 },
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(
@@ -141,6 +134,9 @@ fun PantallaModoExamen(navController : NavHostController?) {
                 Text(text = "FALSO")
 
             }
+        }
+        if (cantidadPreguntas == 5){
+            navController?.navigate(Rutas.PantallaMensajeNota.ruta + "/${aciertos.toString()}")
         }
     }
 }
