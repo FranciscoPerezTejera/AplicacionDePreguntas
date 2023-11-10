@@ -43,14 +43,23 @@ fun PantallaModoExamen(navController : NavHostController?) {
     val foto3: Painter = painterResource(id = R.drawable.madrid)
     val foto4: Painter = painterResource(id = R.drawable.barcelona)
     val foto5: Painter = painterResource(id = R.drawable.messi)
+    val foto6: Painter = painterResource(id = R.drawable.haland)
+    val foto7: Painter = painterResource(id = R.drawable.benzema)
+    val foto8: Painter = painterResource(id = R.drawable.tenerife)
+    val foto9: Painter = painterResource(id = R.drawable.messi_cristiano)
+    val foto10: Painter = painterResource(id = R.drawable.mbappe)
 
     var preguntas = listOf<Pregunta>(
-        Pregunta("¿Ganó Cristiano Ronaldo el balón de oro en el año 2023?", true, foto1),
+        Pregunta("¿Ganó Cristiano Ronaldo el balón de oro en el año 2023?", false, foto1),
         Pregunta("¿Ganó el Alemania el mundial de futbol en el año 2010?", false, foto2),
         Pregunta("¿Tiene el Real Madrid 14 UEFA Champions League?", true, foto3),
         Pregunta("¿El FC Barcelona es el único equipo español en haber ganado un sextete?", true, foto4),
-        Pregunta("¿Es Messi el máximo goleador de la historia de la UEFA Champions League?", false, foto5)
-    )
+        Pregunta("¿Es Messi el máximo goleador de la historia de la UEFA Champions League?", false, foto5),
+        Pregunta("¿Fue Haland el pichichi de la Premier League en 2022?", true, foto6),
+        Pregunta("¿Fue Benzema el ganador del balon de oro en 2020?", false, foto7),
+        Pregunta("¿Subio el CD Tenerife a primera en la campaña 21/22?", false, foto8),
+        Pregunta("¿Ha ganado más balones de oro CR7 que Messi?", false, foto9),
+        Pregunta("¿Fichará Mbappe por el Real MAdrid en 2023?", true, foto10))
 
     var preguntaActual by remember { mutableStateOf(0) }
     var aciertos by remember { mutableStateOf(0) }
@@ -90,11 +99,9 @@ fun PantallaModoExamen(navController : NavHostController?) {
                         aciertos++
                     }
                     cantidadPreguntas++
+                    preguntaActual = Random.nextInt(0, preguntas.size)
 
-                    if (cantidadPreguntas < preguntas.size) {
-                        preguntaActual++
-                    }
-                    if (cantidadPreguntas == preguntas.size){
+                    if (cantidadPreguntas == 5){
                         navController?.navigate(Rutas.PantallaMensajeNota.ruta + "/${aciertos.toString()}")
                     }
                 },
@@ -117,11 +124,9 @@ fun PantallaModoExamen(navController : NavHostController?) {
                         aciertos++
                     }
                     cantidadPreguntas++
+                    preguntaActual = Random.nextInt(0, preguntas.size)
 
-                    if (cantidadPreguntas < 5) {
-                        preguntaActual++
-                    }
-                    if (cantidadPreguntas == preguntas.size){
+                    if (cantidadPreguntas == 5){
                         navController?.navigate(Rutas.PantallaMensajeNota.ruta + "/${aciertos.toString()}")
                     }
                 },

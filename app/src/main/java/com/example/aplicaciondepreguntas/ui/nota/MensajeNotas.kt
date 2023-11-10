@@ -35,24 +35,25 @@ import com.example.aplicaciondepreguntas.ui.themes.MiColor
 @Composable
 fun PantallaMensajeNota(aciertos: Int, navController: NavHostController?) {
 
-    val aprobado: Painter = painterResource(id = R.drawable.aprobado)
-    val aprobadoRaspado: Painter = painterResource(id = R.drawable.aprobado_raspado)
-    val suspendido: Painter = painterResource(id = R.drawable.suspendido)
+    val fotoAprobado: Painter = painterResource(id = R.drawable.aprobado)
+    val fotoAprobadoRaspado: Painter = painterResource(id = R.drawable.aprobado_raspado)
+    val fotoSuspendido: Painter = painterResource(id = R.drawable.suspendido)
 
-    var imagenNota by remember { mutableStateOf<Painter>(aprobado) }
+    var imagenNota by remember { mutableStateOf<Painter>(fotoAprobado) }
     var textoMensaje by remember { mutableStateOf("¡ENHORABUENA!,\nHas aprobado con la máxima nota.\nFELICIDADES") }
 
     when {
         aciertos >= 4 -> {
             imagenNota = painterResource(id = R.drawable.aprobado)
             textoMensaje = "¡ENHORABUENA!,\nHas aprobado con la máxima nota.\nFELICIDADES"
+
         }
         aciertos == 3 -> {
-            imagenNota = aprobadoRaspado
+            imagenNota = fotoAprobadoRaspado
             textoMensaje = "No está mal,\nHas aprobado muy justo, pero has aprobado\nFELICIDADES"
         }
         else -> {
-            imagenNota = suspendido
+            imagenNota = fotoSuspendido
             textoMensaje = "Que mal,\nHas suspendido, pero no te desanimes\nVuelve a intentarlo"
         }
     }
