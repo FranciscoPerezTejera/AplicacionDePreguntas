@@ -53,8 +53,8 @@ fun PantallaModoExamen(navController : NavHostController?) {
     )
 
     var preguntaActual by remember { mutableStateOf(0) }
-    var aciertos: Int = 0
-    var cantidadPreguntas: Int = 0
+    var aciertos by remember { mutableStateOf(0) }
+    var cantidadPreguntas by remember { mutableStateOf(0) }
 
 
     Column(
@@ -84,20 +84,18 @@ fun PantallaModoExamen(navController : NavHostController?) {
         Row {
             Button(
                 onClick = {
-
                     val respuesta = respuestaCorrecta(preguntas[preguntaActual], true)
 
                     if (respuesta) {
                         aciertos++
-                    } else {
-                        aciertos--
                     }
-                    preguntaActual++
                     cantidadPreguntas++
-                    if (cantidadPreguntas.equals(5)) {
 
-                        navController?.navigate(Rutas.PantallaMensajeNotas.ruta + "/$aciertos")
-
+                    if (cantidadPreguntas < preguntas.size) {
+                        preguntaActual++
+                    }
+                    if (cantidadPreguntas == preguntas.size){
+                        navController?.navigate(Rutas.PantallaMensajeNota.ruta + "/${aciertos.toString()}")
                     }
                 },
                 shape = RectangleShape,
@@ -114,19 +112,17 @@ fun PantallaModoExamen(navController : NavHostController?) {
             Button(
                 onClick = {
                     val respuesta = respuestaCorrecta(preguntas[preguntaActual], false)
+
                     if (respuesta) {
                         aciertos++
-
-                    } else {
-                        aciertos--
                     }
-                    preguntaActual++
                     cantidadPreguntas++
 
-                    if (cantidadPreguntas.equals(5)) {
-
-                        navController?.navigate(Rutas.PantallaMensajeNotas.ruta + "/${aciertos}")
-
+                    if (cantidadPreguntas < 5) {
+                        preguntaActual++
+                    }
+                    if (cantidadPreguntas == preguntas.size){
+                        navController?.navigate(Rutas.PantallaMensajeNota.ruta + "/${aciertos.toString()}")
                     }
                 },
                 shape = RectangleShape,

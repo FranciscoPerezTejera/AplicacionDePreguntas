@@ -1,4 +1,4 @@
-package com.example.aplicaciondepreguntas.ui.modonormal
+package com.example.aplicaciondepreguntas.ui.nota
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,6 +12,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,24 +27,34 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.aplicaciondepreguntas.R
+import com.example.aplicaciondepreguntas.ui.ruta.Rutas
 import com.example.aplicaciondepreguntas.ui.themes.MiColor
 
 @Composable
-fun PantallaMensajeNota(aciertos : Int) {
+fun PantallaMensajeNota(aciertos: Int, navController: NavHostController?) {
 
-    var imagenNota : Painter
-    var textoMensaje : String
+    val aprobado: Painter = painterResource(id = R.drawable.aprobado)
+    val aprobadoRaspado: Painter = painterResource(id = R.drawable.aprobado_raspado)
+    val suspendido: Painter = painterResource(id = R.drawable.suspendido)
 
-    if (aciertos == 5) {
-        textoMensaje = "¡ENORABUENA!,\nHas aprobado con la máxima nota.\nFELICIDADES"
-        imagenNota = painterResource(id = R.drawable.aprobado)
-    } else if (aciertos == 3) {
-        textoMensaje = "No esta mal,\nHas aprobado muy justo, pero has aprobado\nFELICIDADES"
-        imagenNota = painterResource(id = R.drawable.aprobado_raspado)
-    } else {
-        textoMensaje = "Que mal,\nHas suspendido, pero no te desanimes\nVuelve a intentarlo"
-        imagenNota = painterResource(id = R.drawable.suspendido)
+    var imagenNota by remember { mutableStateOf<Painter>(aprobado) }
+    var textoMensaje by remember { mutableStateOf("¡ENHORABUENA!,\nHas aprobado con la máxima nota.\nFELICIDADES") }
+
+    when {
+        aciertos >= 4 -> {
+            imagenNota = painterResource(id = R.drawable.aprobado)
+            textoMensaje = "¡ENHORABUENA!,\nHas aprobado con la máxima nota.\nFELICIDADES"
+        }
+        aciertos == 3 -> {
+            imagenNota = aprobadoRaspado
+            textoMensaje = "No está mal,\nHas aprobado muy justo, pero has aprobado\nFELICIDADES"
+        }
+        else -> {
+            imagenNota = suspendido
+            textoMensaje = "Que mal,\nHas suspendido, pero no te desanimes\nVuelve a intentarlo"
+        }
     }
 
     Column (
@@ -50,24 +64,31 @@ fun PantallaMensajeNota(aciertos : Int) {
             .fillMaxSize()
             .background(Color(28, 99, 155))
     ) {
-        Text(modifier = Modifier
-            .padding(30.dp),
+        Text(
+            modifier = Modifier.padding(30.dp),
             color = Color.White,
             fontFamily = FontFamily.Monospace,
             fontSize = 24.sp,
             textAlign = TextAlign.Center,
-            text =  textoMensaje)
-        Image(modifier = Modifier
-            .size(450.dp),
-            painter = imagenNota, contentDescription = "")
-        Button(onClick = { },
+            text = textoMensaje
+        )
+        Image(
+            modifier = Modifier.size(450.dp),
+            painter = imagenNota,
+            contentDescription = ""
+        )
+        Button(
+            onClick = {
+                navController?.navigate(Rutas.PantallaPrtincipal.ruta)
+            },
             shape = RectangleShape,
             colors = ButtonDefaults.buttonColors(
                 containerColor = MiColor
             ),
             modifier = Modifier
                 .padding(8.dp)
-                .fillMaxWidth()) {
+                .fillMaxWidth()
+        ) {
             Text(text = "VOLVER AL MENÚ")
         }
     }
@@ -76,5 +97,5 @@ fun PantallaMensajeNota(aciertos : Int) {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun PreviewMensajeNotas() {
-    PantallaMensajeNota(1)
+    PantallaMensajeNota(1, navController = null)
 }

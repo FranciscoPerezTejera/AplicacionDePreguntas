@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.aplicaciondepreguntas.ui.home.PantallaPrincipal
 import com.example.aplicaciondepreguntas.ui.modoexamen.PantallaModoExamen
-import com.example.aplicaciondepreguntas.ui.modonormal.PantallaMensajeNota
+import com.example.aplicaciondepreguntas.ui.nota.PantallaMensajeNota
 import com.example.aplicaciondepreguntas.ui.modonormal.PantallaModoNormal
 import com.example.aplicaciondepreguntas.ui.ruta.Rutas
 
@@ -28,10 +28,12 @@ fun GrafoNavegacion(){
         composable(Rutas.PantallaModoExamen.ruta){
             PantallaModoExamen(navController = navController)
         }
-        composable(Rutas.PantallaMensajeNotas.ruta + "/{aciertos}") {
+        composable(Rutas.PantallaMensajeNota.ruta + "/{aciertos}") {
                 llamada ->
-            val aciertos = llamada.arguments?.getInt("aciertos") ?: 0
-            PantallaMensajeNota(aciertos = aciertos)
+            val aciertos = llamada.arguments?.getString("aciertos")
+            if (aciertos != null) {
+                PantallaMensajeNota(aciertos = aciertos.toInt(), navController = navController)
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.aplicaciondepreguntas.ui.modonormal
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -45,15 +46,15 @@ fun PantallaModoNormal(navController : NavHostController?) {
     val foto5: Painter = painterResource(id = R.drawable.messi)
 
     var preguntas = listOf<Pregunta>(
-        Pregunta("¿Ganó Cristiano Ronaldo el balón de oro en el año 2023?", true, foto1),
+        Pregunta("¿Ganó Cristiano Ronaldo el balón de oro en el año 2023?", false, foto1),
         Pregunta("¿Ganó el Alemania el mundial de futbol en el año 2010?", false, foto2),
         Pregunta("¿Tiene el Real Madrid 14 UEFA Champions League?", true, foto3),
         Pregunta("¿El FC Barcelona es el único equipo español en haber ganado un sextete?", true, foto4),
         Pregunta("¿Es Messi el máximo goleador de la historia de la UEFA Champions League?", false, foto5))
 
     var preguntaActual by remember { mutableStateOf(0) }
-    var aciertos: Int = 0
-    var cantidadPreguntas: Int = 0
+    var aciertos by remember { mutableStateOf(0) }
+    var cantidadPreguntas by remember { mutableStateOf(0) }
 
 
     Column(
@@ -83,19 +84,18 @@ fun PantallaModoNormal(navController : NavHostController?) {
         Row {
             Button(
                 onClick = {
-
                     val respuesta = respuestaCorrecta(preguntas[preguntaActual], true)
 
                     if (respuesta) {
                         aciertos++
-                    } else {
-                        aciertos--
                     }
-                    preguntaActual++
-                        cantidadPreguntas++
-                    if (cantidadPreguntas.equals(5)) {
-                        navController?.navigate(Rutas.PantallaMensajeNotas.ruta + "/$aciertos")
+                    cantidadPreguntas++
 
+                    if (cantidadPreguntas < preguntas.size) {
+                        preguntaActual++
+                    }
+                    if (cantidadPreguntas == preguntas.size){
+                        navController?.navigate(Rutas.PantallaMensajeNota.ruta + "/${aciertos.toString()}")
                     }
                 },
                 shape = RectangleShape,
@@ -112,18 +112,17 @@ fun PantallaModoNormal(navController : NavHostController?) {
             Button(
                 onClick = {
                     val respuesta = respuestaCorrecta(preguntas[preguntaActual], false)
+
                     if (respuesta) {
                         aciertos++
-
-                    } else {
-                        aciertos--
                     }
                     cantidadPreguntas++
-                    preguntaActual++
 
-                    if (cantidadPreguntas == 5) {
-                        navController?.navigate(Rutas.PantallaMensajeNotas.ruta + "/$aciertos")
-
+                    if (cantidadPreguntas < 5) {
+                        preguntaActual++
+                    }
+                    if (cantidadPreguntas == preguntas.size){
+                        navController?.navigate(Rutas.PantallaMensajeNota.ruta + "/${aciertos.toString()}")
                     }
                 },
                 shape = RectangleShape,
@@ -172,7 +171,7 @@ fun PantallaModoNormal(navController : NavHostController?) {
             }
             Button(
                 onClick = {
-                    if (preguntaActual < preguntas.size - 1) {
+                    if (preguntaActual < 5) {
                         preguntaActual++
                     } else {
                         preguntaActual = 0
@@ -194,7 +193,7 @@ fun PantallaModoNormal(navController : NavHostController?) {
 
 fun respuestaCorrecta(pregunta: Pregunta, respuestaUsuario: Boolean): Boolean {
 
-    return return pregunta.isRespuestaCorrecta == respuestaUsuario
+    return pregunta.isRespuestaCorrecta.equals(respuestaUsuario)
 }
 
 
